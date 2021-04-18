@@ -1,0 +1,16 @@
+{% for item in comments %}
+<div class="media card mb-4">
+    <div class="media-body card-body">
+        <h5 class="mt-0">
+            <a href="{% url 'profile' username=item.author.username %}"
+               name="comment_{{ item.id }}">
+                @{{ item.author.username }}
+            </a>
+        </h5>
+        <p>{{ item.text | linebreaksbr }}</p>
+        <div class="d-flex justify-content-between">
+            <small class="text-muted">{{ item.created|date:'d M Y H:i' }}</small>
+        </div>
+    </div>
+</div>
+{% endfor %}

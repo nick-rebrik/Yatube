@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ author.username }}{% endblock %}
+{% block header %}Профиль пользователя:{% endblock %}
+{% block content %}
+
+    <main role="main" class="container">
+        <div class="row">
+            {% include 'mini_templates/post_author.html' with author=author follow=follow %}
+            <div class="col-md-9">
+                {% for post in posts %}
+                    {% include 'mini_templates/post_post.html' with post=post %}
+                {% endfor %}
+                <div class="page">{% include "paginator.html" with page=posts %}</div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

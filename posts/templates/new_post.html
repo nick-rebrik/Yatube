@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}
+    {% if not edit %}
+        Новая запись
+    {% else %}
+        Редактирование записи
+    {% endif %}
+{% endblock %}
+{% block header %}
+    {% if not edit %}
+        Добавить запись
+    {% else %}
+        Редактировать запись
+    {% endif %}
+{% endblock %}
+{% block content %}
+
+     <form method="post" enctype="multipart/form-data" action={% if not edit %}"{% url 'new_post' %}"{% else %}"{% url 'post_edit' username=post.author post_id=post.id %}"{% endif %}>
+        {% csrf_token %}
+
+        {% for error in form.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+
+        {% for field in form %}
+            <div class="form-group row" aria-required={% if field.field.required %}"true"{% else %}"false"{% endif %}>
+                <label for="{{ field.id_for_label }}" class="col-md-4 col-form-label text-md-right">{{ field.label }}{% if field.field.required %}
+                <span class="required">*</span>{% endif %}</label>
+                <div class="col-md-6">
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small id="{{ field.id_for_label }}-help" class="form-text text-muted">{{ field.help_text|safe }}</small>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+         <div class="col-md-6 offset-md-4">
+            <button type="submit" class="btn btn-primary">
+                {% if not edit %}
+                    Добавить
+                {% else %}
+                    Сохранить
+                {% endif %}
+            </button>
+         </div>
+     </form>
+{% endblock %}
