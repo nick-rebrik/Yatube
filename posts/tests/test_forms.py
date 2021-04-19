@@ -77,6 +77,7 @@ class PostsFormTest(TestCase):
         self.assertEqual(last_post.group, PostsFormTest.group)
         self.assertEqual(last_post.text, form_data['text'])
         self.assertEqual(last_post.author, self.user)
+        self.assertIsNotNone(last_post.image)
 
     def test_cant_create_post_guest_client(self):
         post_count = Post.objects.count()
