@@ -1,16 +1,31 @@
+{% if user.is_authenticated %}
+    <div class="card mb-3 mt-1 shadow-sm">
+      <form method="post" action="{% url 'add_comment' username=author post_id=post.id %}">
+          {% csrf_token %}
+          <h5 class="card-header">Добавить комментарий:</h5>
+          <div class="card-body">
+              <div class="form-group">
+                  {{ form.text }}
+              </div>
+              <button type="submit" class="btn btn-primary">Отправить</button>
+          </div>
+      </form>
+    </div>
+{% endif %}
+
 {% for item in comments %}
-<div class="media card mb-4">
-    <div class="media-body card-body">
-        <h5 class="mt-0">
-            <a href="{% url 'profile' username=item.author.username %}"
-               name="comment_{{ item.id }}">
-                @{{ item.author.username }}
-            </a>
-        </h5>
-        <p>{{ item.text | linebreaksbr }}</p>
-        <div class="d-flex justify-content-between">
-            <small class="text-muted">{{ item.created|date:'d M Y H:i' }}</small>
+    <div class="media card mb-4">
+        <div class="media-body card-body">
+            <h5 class="mt-0">
+                <a href="{% url 'profile' username=item.author.username %}"
+                   name="comment_{{ item.id }}">
+                    @{{ item.author.username }}
+                </a>
+            </h5>
+            <p>{{ item.text | linebreaksbr }}</p>
+            <div class="d-flex justify-content-between">
+                <small class="text-muted">{{ item.created|date:'d M Y H:i' }}</small>
+            </div>
         </div>
     </div>
-</div>
 {% endfor %}

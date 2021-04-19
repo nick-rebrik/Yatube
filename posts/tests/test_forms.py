@@ -90,9 +90,9 @@ class PostsFormTest(TestCase):
             data=form_data,
             follow=True
         )
-        self.assertRedirects(response, reverse(
-            'login') + '?next=' + reverse('new_post')
-        )
+        self.assertRedirects(response,
+                             reverse('login') + '?next=' + reverse('new_post')
+                             )
         self.assertEqual(Post.objects.count(), post_count)
 
     def test_edit_post(self):

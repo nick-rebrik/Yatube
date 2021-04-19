@@ -69,22 +69,22 @@ class PostsURLTests(TestCase):
 
     def test_status_post_edit_page_unauthorized(self):
         response = self.guest_client.get(reverse('post_edit', kwargs={
-            'username': f'{PostsURLTests.post.author}',
-            'post_id': f'{PostsURLTests.post.id}'}))
+            'username': PostsURLTests.post.author,
+            'post_id': PostsURLTests.post.id}))
         self.assertRedirects(response, reverse('post', kwargs={
-            'username': f'{PostsURLTests.post.author}',
-            'post_id': f'{PostsURLTests.post.id}'}))
+            'username': PostsURLTests.post.author,
+            'post_id': PostsURLTests.post.id}))
 
     def test_status_post_edit_page_authorized(self):
         response = self.authorized_client.get(reverse('post_edit', kwargs={
-            'username': f'{PostsURLTests.post.author}',
-            'post_id': f'{PostsURLTests.post.id}'}))
+            'username': PostsURLTests.post.author,
+            'post_id': PostsURLTests.post.id}))
         self.assertRedirects(response, reverse('post', kwargs={
-            'username': f'{PostsURLTests.post.author}',
-            'post_id': f'{PostsURLTests.post.id}'}))
+            'username': PostsURLTests.post.author,
+            'post_id': PostsURLTests.post.id}))
 
     def test_status_post_edit_page_author(self):
         response = self.author_client.get(reverse('post_edit', kwargs={
-            'username': f'{PostsURLTests.post.author}',
-            'post_id': f'{PostsURLTests.post.id}'}))
+            'username': PostsURLTests.post.author,
+            'post_id': PostsURLTests.post.id}))
         self.assertEqual(response.status_code, HTTPStatus.OK)

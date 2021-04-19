@@ -46,11 +46,12 @@ def new_post(request):
 def profile(request, username):
     author = get_object_or_404(User, username=username)
     user_posts = author.posts.all()
-    if not request.user.is_authenticated:
-        follow = False
-    else:
+
+    follow = False
+    if request.user.is_authenticated:
         follow = Follow.objects.filter(
-            user=request.user, author=author
+            user=request.user,
+            author=author,
         ).exists()
 
     paginator = Paginator(user_posts, POST_ON_PAGE)
@@ -101,22 +102,16 @@ def post_edit(request, username, post_id):
 
 @login_required()
 def add_comment(request, username, post_id):
-    form = CommentForm(request.POST or None)
     post = get_object_or_404(Post, id=post_id)
+    form = CommentForm(request.POST or None)
     if form.is_valid():
         comment_object = form.save(commit=False)
         comment_object.author = request.user
         comment_object.post = post
         comment_object.save()
-        return redirect(reverse(
-            'post', kwargs={'username': username, 'post_id': post_id}
-        ))
-    return render(request, 'post.html', {
-        'form': form,
-        'post': post,
-        'author': post.author,
-        'add_comment': True,
-    })
+    return redirect(reverse(
+        'post', kwargs={'username': username, 'post_id': post_id}
+    ))
 
 
 @login_required()

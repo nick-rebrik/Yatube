@@ -179,36 +179,49 @@ class PostsViewsTests(TestCase):
         )
 
     def test_authorized_follow(self):
+        object_count = Follow.objects.count()
         self.authorized_client.get(reverse('profile_follow', kwargs={
             'username': PostsViewsTests.post.author}
         ))
+        self.assertEqual(Follow.objects.count(), object_count + 1)
         self.assertTrue(Follow.objects.filter(
             user=self.user,
             author=PostsViewsTests.post.author
         ))
 
+        last_object = Follow.objects.first()
+        self.assertEqual(last_object.user, self.user)
+        self.assertEqual(last_object.author, PostsViewsTests.post.author)
+
     def test_authorized_unfollow(self):
+        object_count = Follow.objects.count()
+        Follow.objects.create(
+            user=self.user,
+            author=PostsViewsTests.post.author
+        )
         self.authorized_client.get(reverse('profile_unfollow', kwargs={
             'username': PostsViewsTests.post.author}
         ))
+
+        self.assertEqual(Follow.objects.count(), object_count)
         self.assertFalse(Follow.objects.filter(
             user=self.user,
             author=PostsViewsTests.post.author
         ))
 
-    def test_follow_index_context(self):
-        self.authorized_client.get(reverse('profile_follow', kwargs={
-            'username': PostsViewsTests.post.author}
-        ))
-
-        response_followed_user = self.authorized_client.get(
-            reverse('follow_index')
-        )
-        self.assertEqual(
-            response_followed_user.context['page'][0], PostsViewsTests.post
+    def test_follow_index_context_followed_user(self):
+        Follow.objects.create(
+            user=self.user,
+            author=PostsViewsTests.post.author
         )
 
-        response_unfollowed_user = self.authorized_unfoloowed.get(
+        response = self.authorized_client.get(
             reverse('follow_index')
         )
-        self.assertEqual(len(response_unfollowed_user.context['page']), 0)
+        self.context_check(response.context['page'][0])
+
+    def test_follow_index_context_non_followed_user(self):
+        response = self.authorized_unfoloowed.get(
+            reverse('follow_index')
+        )
+        self.assertEqual(len(response.context['page']), 0)
