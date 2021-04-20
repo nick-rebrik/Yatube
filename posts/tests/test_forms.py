@@ -83,7 +83,7 @@ class PostsFormTest(TestCase):
         post_count = Post.objects.count()
         form_data = {
             'group': PostsFormTest.group.id,
-            'text': 'Test text',
+            'text': 'Something new',
         }
 
         response = self.guest_client.post(

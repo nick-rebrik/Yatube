@@ -184,11 +184,6 @@ class PostsViewsTests(TestCase):
             'username': PostsViewsTests.post.author}
         ))
         self.assertEqual(Follow.objects.count(), object_count + 1)
-        self.assertTrue(Follow.objects.filter(
-            user=self.user,
-            author=PostsViewsTests.post.author
-        ))
-
         last_object = Follow.objects.first()
         self.assertEqual(last_object.user, self.user)
         self.assertEqual(last_object.author, PostsViewsTests.post.author)
@@ -204,10 +199,6 @@ class PostsViewsTests(TestCase):
         ))
 
         self.assertEqual(Follow.objects.count(), object_count)
-        self.assertFalse(Follow.objects.filter(
-            user=self.user,
-            author=PostsViewsTests.post.author
-        ))
 
     def test_follow_index_context_followed_user(self):
         Follow.objects.create(
