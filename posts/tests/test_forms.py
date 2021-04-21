@@ -61,7 +61,7 @@ class PostsFormTest(TestCase):
         )
         form_data = {
             'group': PostsFormTest.group.id,
-            'text': 'Test text',
+            'text': 'Other text in new post',
             'image': uploaded_image,
         }
 
