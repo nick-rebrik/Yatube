@@ -73,11 +73,11 @@ class PostsFormTest(TestCase):
         self.assertRedirects(response, reverse('index'))
         self.assertEqual(Post.objects.count(), post_count + 1)
 
-        last_post = Post.objects.first()
-        self.assertEqual(last_post.group, PostsFormTest.group)
-        self.assertEqual(last_post.text, form_data['text'])
-        self.assertEqual(last_post.author, self.user)
-        self.assertIsNotNone(last_post.image)
+        first_post = Post.objects.first()
+        self.assertEqual(first_post.group, PostsFormTest.group)
+        self.assertEqual(first_post.text, form_data['text'])
+        self.assertEqual(first_post.author, self.user)
+        self.assertIsNotNone(first_post.image)
 
     def test_cant_create_post_guest_client(self):
         post_count = Post.objects.count()
