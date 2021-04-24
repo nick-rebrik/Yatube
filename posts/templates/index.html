@@ -6,7 +6,7 @@
     {% include "mini_templates/menu.html" with index=True %}
 
     {% load cache %}
-    {% cache 20 index_page %}
+    {% cache 20 index_page page.number %}
         {% for post in page %}
             {% include 'mini_templates/post_post.html' with post=post homepage=True %}
         {% endfor %}
