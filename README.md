@@ -1,5 +1,5 @@
 # Yatube
-> A small social network for authors.
+***A small social network for authors.***
 
 ### Description
 
