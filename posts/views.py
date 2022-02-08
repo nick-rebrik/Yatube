@@ -14,7 +14,9 @@ User = get_user_model()
 
 
 def index(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().select_related(
+        'author', 'group'
+    ).prefetch_related('comments')
 
     paginator = Paginator(posts, POST_ON_PAGE)
     page_number = request.GET.get('page')
@@ -24,7 +26,7 @@ def index(request):
 
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    posts = group.posts.all()
+    posts = group.posts.all().select_related('author')
 
     paginator = Paginator(posts, POST_ON_PAGE)
     page_number = request.GET.get('page')
@@ -45,7 +47,7 @@ def new_post(request):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    user_posts = author.posts.all()
+    user_posts = author.posts.all().prefetch_related('comments')
 
     follow = False
     if request.user.is_authenticated:
@@ -67,7 +69,7 @@ def profile(request, username):
 
 def post_view(request, username, post_id):
     post = get_object_or_404(Post, id=post_id, author__username=username)
-    comments = post.comments.all()
+    comments = post.comments.all().select_related('author')
     form = CommentForm()
     return render(request, 'post.html', {
         'post': post,
@@ -116,7 +118,9 @@ def add_comment(request, username, post_id):
 
 @login_required()
 def follow_index(request):
-    posts = Post.objects.filter(author__following__user=request.user)
+    posts = Post.objects.filter(
+        author__following__user=request.user
+    ).select_related('author', 'group').prefetch_related('comments')
 
     paginator = Paginator(posts, POST_ON_PAGE)
     page_number = request.GET.get('page')
