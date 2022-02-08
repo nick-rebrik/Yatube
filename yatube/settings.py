@@ -13,12 +13,13 @@ SECRET_KEY = 'Your KEY'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '*'
+    '3.17.149.254',
+    'localhost',
 ]
 
-INTERNAL_IPS = [
-    # "127.0.0.1",
-]
+# INTERNAL_IPS = [
+#     "127.0.0.1",
+# ]
 # Application definition
 
 INSTALLED_APPS = [
@@ -86,8 +87,8 @@ DATABASES = {
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        # 'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        # 'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 }
 
