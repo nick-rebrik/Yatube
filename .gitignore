@@ -128,8 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Static's
-.posts/static/
+# Static
 static/
 
 # Media
